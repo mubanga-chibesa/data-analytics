@@ -15,8 +15,10 @@ type Pub = {
 export default async function ResearchPage() {
   const o = await getOverview();
   const supabase = await createClient();
+  // Publication-grain view (one row per paper) — fact_publication is per-author
+  // and would list multi-author papers multiple times.
   const { data } = await supabase
-    .from("fact_publication")
+    .from("publication")
     .select("publication_id, title, pub_year, venue_name, is_unza_journal, is_open_access, cited_by_count")
     .order("cited_by_count", { ascending: false })
     .limit(10);

@@ -50,7 +50,11 @@ def run_connector(name: str, full: bool) -> None:
             batch: list[tuple[str, dict]] = []
             for source_key, payload in connector.fetch(since):
                 rows_read += 1
-                last_seen = payload.get("updated_date") or payload.get("last_modified") or last_seen
+                # Track the MAX watermark value seen — results aren't ordered by
+                # updated_date, so last-seen would not be monotonic.
+                cand = payload.get("updated_date") or payload.get("last_modified")
+                if cand and (last_seen is None or cand > last_seen):
+                    last_seen = cand
                 batch.append((source_key, payload))
                 if len(batch) >= 500:
                     rows_loaded += db.land_records(conn, run_id, connector.source, connector.entity_type, batch)

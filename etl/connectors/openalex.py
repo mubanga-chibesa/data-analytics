@@ -38,21 +38,28 @@ class OpenAlexWorks(Connector):
             # Watermark is an ISO date/time; OpenAlex wants YYYY-MM-DD.
             filters.append(f"from_updated_date:{since[:10]}")
 
+        # Basic page-number paging (keyless, capped at 10,000 results). Cursor
+        # paging now needs a free OpenAlex API key; page paging does not and is
+        # ample here (a single institution's output is well under the cap).
+        # Sorting by updated_date needs a paid plan, so sort by publication_date;
+        # incremental loads still work via from_updated_date with the loader
+        # tracking the max updated_date seen.
         params = {
             "filter": ",".join(filters),
             "per-page": 200,
-            "cursor": "*",
+            "page": 1,
             "mailto": MAILTO,
-            "sort": "updated_date:asc",
+            "sort": "publication_date:asc",
         }
         with httpx.Client(headers={"User-Agent": f"unza-analytics ({MAILTO})"}) as client:
             while True:
                 data = self._page(client, params)
-                for work in data.get("results", []):
+                results = data.get("results", [])
+                for work in results:
                     # OpenAlex ids look like https://openalex.org/W1234 — use the suffix.
                     source_key = work["id"].rsplit("/", 1)[-1]
                     yield source_key, work
-                cursor = data.get("meta", {}).get("next_cursor")
-                if not cursor or not data.get("results"):
+                # Stop on a short/empty page or at the 10k keyless ceiling.
+                if len(results) < params["per-page"] or params["page"] * params["per-page"] >= 10000:
                     break
-                params["cursor"] = cursor
+                params["page"] += 1
