@@ -1,0 +1,21 @@
+# Render Blueprint — UNZA Data Analytics web app (Next.js SSR, Node service).
+# The NEXT_PUBLIC_* values are publishable client keys (already shipped in the
+# browser bundle), so they are safe to commit. Secrets stay out of this file.
+services:
+  - type: web
+    name: unza-analytics-web
+    runtime: node
+    region: frankfurt          # closest Render region to the eu-west-1 Supabase project
+    plan: free
+    rootDir: web
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    healthCheckPath: /login
+    envVars:
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: https://gnjrgfopybyrpekgdven.supabase.co
+      - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+        value: sb_publishable_no4Y-7B96JYaOLgBP9FmYw_BOcF23TG
+      - key: NODE_VERSION
+        value: "22"
