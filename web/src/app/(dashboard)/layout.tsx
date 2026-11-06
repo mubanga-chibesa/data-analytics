@@ -1,4 +1,5 @@
-import { Sidebar } from "@/components/Sidebar";
+import { TopBar } from "@/components/TopBar";
+import { SectionNav } from "@/components/SectionNav";
 import { getProfile } from "@/lib/queries";
 
 export default async function DashboardLayout({
@@ -8,9 +9,12 @@ export default async function DashboardLayout({
 }) {
   const profile = await getProfile();
   return (
-    <div className="flex">
-      <Sidebar name={profile?.full_name ?? profile?.email} role={profile?.app_role} />
-      <main className="h-dvh flex-1 overflow-y-auto">{children}</main>
+    <div className="min-h-dvh bg-[var(--bg)]">
+      <TopBar name={profile?.full_name ?? profile?.email} role={profile?.app_role} />
+      <div className="mx-auto max-w-6xl px-6 py-7">
+        <SectionNav />
+        <div className="mt-7">{children}</div>
+      </div>
     </div>
   );
 }

@@ -34,30 +34,12 @@
   --shadow: 0 1px 2px rgba(21, 32, 26, 0.04), 0 10px 28px -14px rgba(21, 32, 26, 0.16);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0a120d;
-    --surface: #121b15;
-    --surface-2: #0e1612;
-    --border: #223229;
-    --fg: #eaf0ea;
-    --fg-muted: #94a89c;
-
-    --brand: #2f9e68;
-    --brand-2: #3cbb7c;
-    --brand-soft: #16291e;
-
-    --accent: #d9ae3f;
-    --accent-2: #4a98a6;
-    --accent-soft: #2a2415;
-    --accent-2-soft: #16262a;
-
-    --danger: #d1604a;
-    --danger-soft: #2c1712;
-
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -14px rgba(0, 0, 0, 0.6);
-  }
-}
+/* Light-first by design. This is an institutional analytics product — dense
+   tables and charts, read by leadership, exported to reports, shown on
+   projectors — so the canvas is a consistent warm light, not OS-driven dark.
+   (A manual dark toggle can be added later as an explicit opt-in; it should
+   never be the default here.) Brand character comes from the deep-green
+   chrome (sidebar rail, login panel), not from darkening the whole UI. */
 
 @theme inline {
   --color-bg: var(--bg);
@@ -80,6 +62,8 @@
 }
 
 * { border-color: var(--color-border); }
+
+:root { color-scheme: light; }
 
 body {
   background: var(--bg);

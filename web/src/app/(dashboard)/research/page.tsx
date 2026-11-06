@@ -25,13 +25,10 @@ export default async function ResearchPage() {
   const top = (data ?? []) as Pub[];
 
   return (
-    <div className="mx-auto max-w-6xl px-8 py-8">
-      <header className="mb-7">
-        <h1 className="text-2xl font-semibold tracking-tight">Research Output</h1>
-        <p className="mt-1 text-sm text-[var(--fg-muted)]">
-          Publications and citation impact aggregated from ORCID, OpenAlex, DSpace and journals.unza.zm.
-        </p>
-      </header>
+    <div>
+      <p className="mb-5 text-sm text-[var(--fg-muted)]">
+        Publications and citation impact aggregated from ORCID, OpenAlex, DSpace and journals.unza.zm.
+      </p>
 
       <div className="card mb-5 p-5">
         <h2 className="text-sm font-semibold">Output & impact over time</h2>

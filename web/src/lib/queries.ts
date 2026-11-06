@@ -38,8 +38,15 @@ export async function getOverview(): Promise<Overview> {
 
   const kpis = (data ?? []) as Kpi[];
   const years = kpis.map((k) => k.academic_year);
-  const latestYear = years.length ? Math.max(...years) : new Date().getFullYear();
-  const latest = kpis.filter((k) => k.academic_year === latestYear);
+  const maxYear = years.length ? Math.max(...years) : new Date().getFullYear();
+  // Research data (real, OpenAlex) can extend past the teaching/seed data, so
+  // anchor the teaching KPIs to the latest year that actually has enrolment —
+  // otherwise "latest year" lands on a research-only year and reads as all-zero.
+  const teachingYears = kpis.filter((k) => (k.headcount ?? 0) > 0).map((k) => k.academic_year);
+  const latestYear = teachingYears.length ? Math.max(...teachingYears) : maxYear;
+  // Teaching aggregates: latest teaching year, real departments only (OpenAlex
+  // research rows have a null department and must not pollute teaching views).
+  const latest = kpis.filter((k) => k.academic_year === latestYear && k.department_id);
 
   const sum = (rows: Kpi[], f: (k: Kpi) => number | null | undefined) =>
     rows.reduce((a, k) => a + (f(k) ?? 0), 0);
@@ -58,7 +65,7 @@ export async function getOverview(): Promise<Overview> {
   const byDepartment = Object.values(
     latest.reduce<Record<string, { department: string; students: number; completions: number; drops: number }>>(
       (acc, k) => {
-        const d = k.department_id ?? "—";
+        const d = k.department_id as string;
         acc[d] ??= { department: d, students: 0, completions: 0, drops: 0 };
         acc[d].students += k.headcount ?? 0;
         acc[d].completions += k.completions ?? 0;
@@ -69,6 +76,8 @@ export async function getOverview(): Promise<Overview> {
     ),
   );
 
+  // Research history can run back decades; show the last 12 years so the recent
+  // trajectory is legible instead of a long flat tail.
   const pubsByYear = Object.values(
     kpis.reduce<Record<number, { year: number; publications: number; citations: number }>>((acc, k) => {
       acc[k.academic_year] ??= { year: k.academic_year, publications: 0, citations: 0 };
@@ -76,7 +85,9 @@ export async function getOverview(): Promise<Overview> {
       acc[k.academic_year].citations += k.citations ?? 0;
       return acc;
     }, {}),
-  ).sort((a, b) => a.year - b.year);
+  )
+    .filter((d) => d.year >= maxYear - 11)
+    .sort((a, b) => a.year - b.year);
 
   return {
     kpis,

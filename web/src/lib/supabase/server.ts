@@ -10,6 +10,8 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
+      // Data views live in the `api` schema (see client.ts).
+      db: { schema: "api" },
       cookies: {
         getAll() {
           return cookieStore.getAll();

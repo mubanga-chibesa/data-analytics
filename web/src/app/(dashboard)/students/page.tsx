@@ -4,13 +4,10 @@ import { getOverview } from "@/lib/queries";
 export default async function StudentsPage() {
   const o = await getOverview();
   return (
-    <div className="mx-auto max-w-6xl px-8 py-8">
-      <header className="mb-7">
-        <h1 className="text-2xl font-semibold tracking-tight">Students & Learning</h1>
-        <p className="mt-1 text-sm text-[var(--fg-muted)]">
-          Enrolment distribution and learning outcomes, FY {o.latestYear}.
-        </p>
-      </header>
+    <div>
+      <p className="mb-5 text-sm text-[var(--fg-muted)]">
+        Enrolment distribution and learning outcomes, FY {o.latestYear}.
+      </p>
 
       <div className="grid gap-5 lg:grid-cols-2">
         <div className="card p-5">

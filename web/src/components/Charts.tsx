@@ -90,11 +90,23 @@ export function PubTrend({
         </defs>
         <CartesianGrid vertical={false} stroke={GRID} />
         <XAxis dataKey="year" tickLine={false} axisLine={false} fontSize={12} />
-        <YAxis tickLine={false} axisLine={false} fontSize={12} />
+        {/* Separate axes: publications (hundreds) and citations (tens of
+            thousands) share no sensible scale, so give each its own. */}
+        <YAxis yAxisId="pub" tickLine={false} axisLine={false} fontSize={12} width={40} stroke={GREEN} />
+        <YAxis
+          yAxisId="cit"
+          orientation="right"
+          tickLine={false}
+          axisLine={false}
+          fontSize={12}
+          width={44}
+          stroke={GOLD}
+          tickFormatter={(v: number) => (v >= 1000 ? `${Math.round(v / 1000)}k` : `${v}`)}
+        />
         <Tooltip contentStyle={tooltipStyle} />
         <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
-        <Area type="monotone" dataKey="publications" name="Publications" stroke={GREEN} fill="url(#pub)" strokeWidth={2} />
-        <Area type="monotone" dataKey="citations" name="Citations" stroke={GOLD} fill="url(#cit)" strokeWidth={2} />
+        <Area yAxisId="pub" type="monotone" dataKey="publications" name="Publications" stroke={GREEN} fill="url(#pub)" strokeWidth={2} />
+        <Area yAxisId="cit" type="monotone" dataKey="citations" name="Citations" stroke={GOLD} fill="url(#cit)" strokeWidth={2} />
       </AreaChart>
     </ResponsiveContainer>
   );

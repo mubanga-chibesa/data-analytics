@@ -9,16 +9,13 @@ export default async function OverviewPage() {
   const empty = o.kpis.length === 0;
 
   return (
-    <div className="mx-auto max-w-6xl px-8 py-8">
-      <header className="mb-7">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">Institutional Overview</h1>
-          <span className="chip">FY {o.latestYear}</span>
-        </div>
-        <p className="mt-1 text-sm text-[var(--fg-muted)]">
+    <div>
+      <div className="mb-5 flex items-end justify-between gap-4">
+        <p className="text-sm text-[var(--fg-muted)]">
           Teaching, learning and research intelligence across the University of Zambia.
         </p>
-      </header>
+        <span className="chip shrink-0">FY {o.latestYear}</span>
+      </div>
 
       {empty && (
         <div className="card mb-6 border-dashed p-6 text-sm text-[var(--fg-muted)]">
@@ -66,7 +63,7 @@ export default async function OverviewPage() {
             </thead>
             <tbody>
               {o.kpis
-                .filter((k) => k.academic_year === o.latestYear)
+                .filter((k) => k.academic_year === o.latestYear && k.department_id)
                 .map((k) => (
                   <tr key={`${k.department_id}`} className="border-t">
                     <td className="px-5 py-3 font-medium">{k.department_id ?? "—"}</td>
