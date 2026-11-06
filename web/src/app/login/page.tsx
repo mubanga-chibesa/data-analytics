@@ -5,17 +5,7 @@ import { useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Emblem } from "@/components/Brand";
-
-// Static, believable preview numbers for the brand panel — not live data
-// (unauthenticated), but shaped exactly like the real institutional_kpi mart
-// so the panel reads as a screenshot of the actual product, not marketing art.
-const PREVIEW_BARS = [38, 52, 46, 71, 64, 83, 58];
-const PREVIEW_DEPTS = [
-  { code: "MED", pct: 78 },
-  { code: "CS", pct: 64 },
-  { code: "ENG", pct: 59 },
-  { code: "ECON", pct: 71 },
-];
+import { LoginPreview } from "@/components/LoginPreview";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -65,54 +55,7 @@ export default function LoginPage() {
         </div>
 
         {/* live-product preview: the point of the panel */}
-        <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.5)] backdrop-blur-sm xl:p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-medium uppercase tracking-wide text-white/40">
-              Institutional overview · FY2025
-            </span>
-            <span className="flex items-center gap-1.5 text-[11px] text-white/40">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#4ade80]" />
-              Live
-            </span>
-          </div>
-
-          <div className="mt-4 grid grid-cols-3 gap-3">
-            {[
-              { label: "Students", value: "12,480" },
-              { label: "Completion", value: "81%" },
-              { label: "Publications", value: "214" },
-            ].map((s) => (
-              <div key={s.label}>
-                <div className="text-lg font-semibold tabular-nums">{s.value}</div>
-                <div className="text-[11px] text-white/40">{s.label}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-5 flex h-16 items-end gap-1.5">
-            {PREVIEW_BARS.map((h, i) => (
-              <div
-                key={i}
-                className="flex-1 rounded-[2px] bg-gradient-to-t from-[#d9b65a] to-[#d9b65a]/30"
-                style={{ height: `${h}%` }}
-              />
-            ))}
-          </div>
-
-          <div className="mt-4 space-y-2 border-t border-white/10 pt-4">
-            {PREVIEW_DEPTS.map((d) => (
-              <div key={d.code} className="flex items-center gap-2.5">
-                <span className="w-9 text-[11px] text-white/40">{d.code}</span>
-                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
-                  <div
-                    className="h-full rounded-full bg-[#2f9e6a]"
-                    style={{ width: `${d.pct}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <LoginPreview />
       </aside>
 
       {/* ── Sign-in panel ───────────────────────────────────────────── */}
