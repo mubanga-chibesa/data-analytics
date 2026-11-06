@@ -9,6 +9,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { Emblem } from "@/components/Brand";
 
 const NAV = [
   { href: "/", label: "Overview", icon: LayoutDashboard },
@@ -35,12 +36,12 @@ export function Sidebar({
   return (
     <aside className="flex h-dvh w-64 shrink-0 flex-col border-r bg-[var(--surface)] px-4 py-5">
       <div className="flex items-center gap-2.5 px-2">
-        <div className="grid h-9 w-9 place-items-center rounded-xl bg-[var(--brand)] text-white font-bold">
-          U
-        </div>
+        <Emblem size={34} />
         <div className="leading-tight">
           <div className="text-sm font-semibold">UNZA Analytics</div>
-          <div className="text-[11px] text-[var(--fg-muted)]">Data Platform</div>
+          <div className="text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--fg-muted)]">
+            Data Platform
+          </div>
         </div>
       </div>
 
