@@ -1,0 +1,15 @@
+# Copy to ~/.dbt/profiles.yml (or set DBT_PROFILES_DIR here) and fill the password.
+# Uses the same Supabase session-pooler connection as migrations.
+unza_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: aws-0-eu-west-1.pooler.supabase.com
+      port: 5432
+      user: postgres.gnjrgfopybyrpekgdven
+      password: "{{ env_var('PGPASSWORD') }}"
+      dbname: postgres
+      schema: staging
+      threads: 4
+      sslmode: require

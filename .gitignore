@@ -1,0 +1,36 @@
+# ─── Secrets (NEVER commit) ───────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.local
+*.pem
+.supabase/
+
+# ─── Node / Next.js ───────────────────────────────────────────────────────
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+.vercel
+
+# ─── Python ETL ───────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.python-version
+
+# ─── dbt ──────────────────────────────────────────────────────────────────
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+profiles.yml
+
+# ─── OS / editor ──────────────────────────────────────────────────────────
+.DS_Store
+*.log
+.idea/
+.vscode/

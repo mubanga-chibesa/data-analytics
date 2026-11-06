@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Verbatim landing layer populated by the ETL loader."
+    tables:
+      - name: ingest
+        description: "Universal landing table; one row per source record."
+        columns:
+          - name: source
+            tests: [not_null]
+          - name: payload
+            tests: [not_null]

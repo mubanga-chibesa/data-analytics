@@ -1,0 +1,21 @@
+name: "unza_analytics"
+version: "1.0.0"
+config-version: 2
+profile: "unza_analytics"
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+
+# The physical schema (raw/core/mart tables, constraints, partitions, RLS) is
+# owned by Supabase migrations. dbt owns the TRANSFORMATION logic: parsing raw
+# JSONB into typed staging views, and (incrementally) populating core.
+#
+# Staging models are views over raw.ingest; core/intermediate models read them.
+models:
+  unza_analytics:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: staging
