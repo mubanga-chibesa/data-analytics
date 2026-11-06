@@ -34,18 +34,41 @@ export default function LoginPage() {
   return (
     <div className="grid min-h-dvh lg:grid-cols-2">
       {/* ── Brand / product panel ───────────────────────────────────── */}
-      <aside className="relative hidden flex-col justify-between bg-[#0c3321] p-10 text-white lg:flex xl:p-14">
-        <div className="flex items-center gap-2.5">
+      <aside
+        className="grain relative hidden flex-col justify-between p-10 text-white lg:flex xl:p-14"
+        style={{
+          background:
+            "linear-gradient(165deg, #0e3d28 0%, #0c3321 32%, #092a1b 60%, #061e14 100%)",
+        }}
+      >
+        {/* soft directional light, top-left — depth without a gradient blob */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.5]"
+          style={{
+            background:
+              "radial-gradient(60% 50% at 8% 0%, rgba(60,187,124,0.22) 0%, transparent 60%)",
+          }}
+        />
+        {/* a single thin warm seam along the inner edge, like a bound page */}
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 w-px opacity-40"
+          style={{ background: "linear-gradient(180deg, transparent, #d9ae3f, transparent)" }}
+        />
+
+        <div className="relative flex items-center gap-2.5">
           <Emblem size={30} />
           <span className="text-[13px] font-semibold tracking-tight">University of Zambia</span>
         </div>
 
-        <div className="max-w-md">
-          <p className="text-[13px] font-medium uppercase tracking-[0.16em] text-[#d9b65a]">
+        <div className="relative max-w-md">
+          <p className="text-[13px] font-medium uppercase tracking-[0.16em] text-[#d9ae3f]">
             Data Analytics Platform
           </p>
           <h1 className="mt-3 text-[32px] font-semibold leading-[1.2] tracking-tight xl:text-[38px]">
-            Teaching, learning and research — read as one system.
+            Teaching, learning and research{" "}
+            <span className="bg-gradient-to-r from-[#e8c568] to-[#d9ae3f] bg-clip-text text-transparent">
+              read as one system.
+            </span>
           </h1>
           <p className="mt-4 text-[14.5px] leading-relaxed text-white/55">
             Enrolment, LMS engagement and research output from Moodle, SIS,
@@ -55,7 +78,9 @@ export default function LoginPage() {
         </div>
 
         {/* live-product preview: the point of the panel */}
-        <LoginPreview />
+        <div className="relative">
+          <LoginPreview />
+        </div>
       </aside>
 
       {/* ── Sign-in panel ───────────────────────────────────────────── */}

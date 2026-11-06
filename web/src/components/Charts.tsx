@@ -14,9 +14,10 @@ import {
   Cell,
 } from "recharts";
 
-const GREEN = "#157347";
-const GOLD = "#c79a2a";
-const RED = "#b4452f";
+const GREEN = "#1a8753";
+const GOLD = "#b9872a";
+const TEAL = "#2f6e78";
+const RED = "#a8452e";
 const GRID = "rgba(120,140,128,0.18)";
 
 const tooltipStyle = {
@@ -61,7 +62,7 @@ export function HeadcountBar({
         <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "rgba(120,140,128,0.08)" }} />
         <Bar dataKey="students" name="Students" radius={[0, 4, 4, 0]}>
           {data.map((_, i) => (
-            <Cell key={i} fill={i % 2 ? GOLD : GREEN} />
+            <Cell key={i} fill={i % 2 ? TEAL : GREEN} />
           ))}
         </Bar>
       </BarChart>

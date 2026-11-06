@@ -10,6 +10,14 @@ import { useEffect, useRef, useState } from "react";
 
 type MetricKey = "students" | "completion" | "publications";
 
+// Each metric gets its own color from the palette instead of one gold reused
+// everywhere — the chart's hue tells you which stat you're looking at.
+const METRIC_COLOR: Record<MetricKey, { from: string; to: string; text: string }> = {
+  students: { from: "#3cbb7c", to: "#3cbb7c4d", text: "#5fd99a" },
+  completion: { from: "#5bb0bd", to: "#5bb0bd4d", text: "#7fc9d4" },
+  publications: { from: "#e8c568", to: "#e8c5684d", text: "#e8c568" },
+};
+
 const METRICS: Record<
   MetricKey,
   {
@@ -123,9 +131,8 @@ function StatTile({
       }`}
     >
       <div
-        className={`text-lg font-semibold tabular-nums transition-colors ${
-          active ? "text-[#e8c97a]" : "text-white"
-        }`}
+        className="text-lg font-semibold tabular-nums transition-colors"
+        style={{ color: active ? METRIC_COLOR[metric].text : "white" }}
       >
         {display}
       </div>
@@ -156,8 +163,8 @@ export function LoginPreview() {
         </span>
         <span className="flex items-center gap-1.5 text-[11px] text-white/40">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4ade80] opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4ade80]" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3cbb7c] opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#3cbb7c]" />
           </span>
           Live
         </span>
@@ -180,7 +187,7 @@ export function LoginPreview() {
           return (
             <div key={b.label} className="relative flex-1">
               {hovered && (
-                <div className="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-[#0c3321] px-2 py-1 text-[10px] font-medium text-white shadow-lg ring-1 ring-white/10">
+                <div className="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-[#081f15] px-2 py-1 text-[10px] font-medium text-white shadow-lg ring-1 ring-white/10">
                   {b.value.toLocaleString()} {active.unit}
                   <span className="block text-center text-[9px] text-white/40">{b.label}</span>
                 </div>
@@ -192,14 +199,12 @@ export function LoginPreview() {
                 onFocus={() => setHoverBar(i)}
                 onBlur={() => setHoverBar(null)}
                 aria-label={`${b.label}: ${b.value} ${active.unit}`}
-                className={`absolute bottom-0 left-0 right-0 rounded-[2px] bg-gradient-to-t transition-[height,opacity] duration-700 ease-out ${
-                  hovered
-                    ? "from-[#e8c97a] to-[#e8c97a]/60 opacity-100"
-                    : "from-[#d9b65a] to-[#d9b65a]/30 opacity-90"
-                }`}
+                className="absolute bottom-0 left-0 right-0 rounded-[2px] bg-gradient-to-t transition-[height,opacity] duration-700 ease-out"
                 style={{
                   height: grown ? `${h}%` : "0%",
                   transitionDelay: `${i * 45}ms`,
+                  backgroundImage: `linear-gradient(to top, ${METRIC_COLOR[metric].from}, ${METRIC_COLOR[metric].to})`,
+                  opacity: hovered ? 1 : 0.85,
                 }}
               />
             </div>
@@ -228,11 +233,10 @@ export function LoginPreview() {
               <span className="w-9 shrink-0 text-[11px] text-white/40">{d.code}</span>
               <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
                 <div
-                  className={`h-full rounded-full transition-[background-color] ${
-                    open ? "bg-[#e8c97a]" : "bg-[#2f9e6a]"
-                  }`}
+                  className="h-full rounded-full transition-[background-color]"
                   style={{
                     width: grown ? `${d.pct}%` : "0%",
+                    backgroundColor: open ? "#e8c568" : "#3cbb7c",
                     transition: "width 700ms ease-out, background-color 200ms",
                     transitionDelay: "280ms",
                   }}
