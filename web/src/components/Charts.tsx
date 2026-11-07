@@ -117,12 +117,21 @@ export function HeadcountBar({
 
 export function PubTrend({
   data,
+  onYearClick,
 }: {
   data: { year: number; publications: number; citations: number }[];
+  onYearClick?: (year: number) => void;
 }) {
   return (
     <ResponsiveContainer width="100%" height={280}>
-      <AreaChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
+      <AreaChart
+        data={data}
+        margin={{ top: 8, right: 8, left: -12, bottom: 0 }}
+        onClick={(e: { activeLabel?: string | number }) => {
+          if (onYearClick && e?.activeLabel != null) onYearClick(Number(e.activeLabel));
+        }}
+        style={onYearClick ? { cursor: "pointer" } : undefined}
+      >
         <defs>
           <linearGradient id="pub" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor={GREEN} stopOpacity={0.35} />
