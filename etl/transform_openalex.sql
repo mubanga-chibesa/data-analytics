@@ -45,7 +45,8 @@ begin
 
     if v_pub_id is null then
       insert into core.publication
-        (title, type, pub_date, pub_year, venue_id, is_open_access, cited_by_count)
+        (title, type, pub_date, pub_year, venue_id, is_open_access, cited_by_count,
+         oa_status, topic, topic_subfield, topic_field)
       values (
         coalesce(w.p->>'display_name', '(untitled)'),
         w.p->>'type',
@@ -53,7 +54,11 @@ begin
         nullif(w.p->>'publication_year','')::int,
         v_venue_id,
         (w.p->'open_access'->>'is_oa')::boolean,
-        coalesce((w.p->>'cited_by_count')::int, 0)
+        coalesce((w.p->>'cited_by_count')::int, 0),
+        w.p->'open_access'->>'oa_status',
+        w.p->'primary_topic'->>'display_name',
+        w.p->'primary_topic'->'subfield'->>'display_name',
+        w.p->'primary_topic'->'field'->>'display_name'
       )
       returning publication_id into v_pub_id;
 
@@ -69,6 +74,10 @@ begin
          set cited_by_count = coalesce((w.p->>'cited_by_count')::int, 0),
              is_open_access = (w.p->'open_access'->>'is_oa')::boolean,
              venue_id       = coalesce(venue_id, v_venue_id),
+             oa_status      = w.p->'open_access'->>'oa_status',
+             topic          = w.p->'primary_topic'->>'display_name',
+             topic_subfield = w.p->'primary_topic'->'subfield'->>'display_name',
+             topic_field    = w.p->'primary_topic'->'field'->>'display_name',
              updated_at     = now()
        where publication_id = v_pub_id;
     end if;

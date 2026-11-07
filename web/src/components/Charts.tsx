@@ -12,7 +12,52 @@ import {
   Tooltip,
   Legend,
   Cell,
+  PieChart,
+  Pie,
 } from "recharts";
+
+// Open-access status → colour. Mirrors how OA is conventionally coloured.
+const OA_COLORS: Record<string, string> = {
+  gold: "#c9a227",
+  hybrid: "#2f6e78",
+  green: "#1a8753",
+  bronze: "#a9712e",
+  diamond: "#6ab0bd",
+  closed: "#9aa39c",
+  unknown: "#c3c9c1",
+};
+
+export function OADonut({ data }: { data: { status: string; works: number }[] }) {
+  const total = data.reduce((a, d) => a + d.works, 0);
+  return (
+    <ResponsiveContainer width="100%" height={210}>
+      <PieChart>
+        <Pie
+          data={data}
+          dataKey="works"
+          nameKey="status"
+          innerRadius={52}
+          outerRadius={82}
+          paddingAngle={2}
+          stroke="var(--surface)"
+          strokeWidth={2}
+        >
+          {data.map((d) => (
+            <Cell key={d.status} fill={OA_COLORS[d.status] ?? "#c3c9c1"} />
+          ))}
+        </Pie>
+        <Tooltip
+          contentStyle={tooltipStyle}
+          formatter={(v, n) => {
+            const num = Number(v) || 0;
+            return [`${num} works (${Math.round((num / total) * 100)}%)`, String(n)];
+          }}
+        />
+        <Legend iconType="circle" wrapperStyle={{ fontSize: 11 }} />
+      </PieChart>
+    </ResponsiveContainer>
+  );
+}
 
 const GREEN = "#1a8753";
 const GOLD = "#b9872a";
