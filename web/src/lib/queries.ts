@@ -133,6 +133,8 @@ export type ResearchData = {
     is_unza_journal: boolean | null;
     is_open_access: boolean | null;
     cited_by_count: number | null;
+    doi: string | null;
+    openalex_id: string | null;
   }[];
 };
 
@@ -148,7 +150,7 @@ export async function getResearch(): Promise<ResearchData> {
     supabase.from("pub_type").select("*").order("works", { ascending: false }),
     supabase
       .from("publication")
-      .select("publication_id, title, pub_year, venue_name, is_unza_journal, is_open_access, cited_by_count")
+      .select("publication_id, title, pub_year, venue_name, is_unza_journal, is_open_access, cited_by_count, doi, openalex_id")
       .order("cited_by_count", { ascending: false })
       .limit(10),
   ]);
